@@ -1,0 +1,85 @@
+<template>
+  <v-app>
+    <v-app-bar
+      app
+      color="white"
+      dark
+    >
+      <div class="d-flex align-center">
+        <v-img
+          alt="Vuetify Logo"
+          class="shrink mr-2"
+          contain
+          src="./assets/logo_alura.png"
+          transition="scale-transition"
+        />
+      </div>
+
+      <v-spacer></v-spacer>
+
+      <nav class="classynav">
+            <ul class="d-flex justify-space-between">       
+              <li v-for="route in routes" :key="route.name">
+                <router-link :to="route.path ? route.path : '/'">{{route.name}}</router-link>
+              </li>
+            </ul>
+          </nav>
+          <v-text-field
+            class="d-flex align-center"
+            label="O que está procurando..."
+            dense
+            solo
+            prepend-inner-icon="mdi-magnify"
+            light
+          ></v-text-field>
+    </v-app-bar>
+
+    <v-main>
+      <router-view/>
+    </v-main>
+  </v-app>
+</template>
+
+<script>
+import { routes } from './router/index';
+export default {
+  name: 'App',
+
+  data: () => ({
+    routes,
+  }),
+};
+</script>
+
+<style lang="scss">
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+nav {
+  padding: 30px;
+  width: auto;
+
+  a {
+    font-weight: bold;
+    color: #2c3e50;
+    padding: 10px;
+
+    &.router-link-exact-active {
+      color: #42b983;
+    }
+  }
+}
+
+ul {
+  width: 100%;
+}
+
+li {
+  list-style: none;
+}
+</style>
