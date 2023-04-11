@@ -13,11 +13,16 @@
       <v-spacer></v-spacer>
 
       <nav class="classynav">
-        <ul class="d-flex justify-space-between">
+        <!-- <ul class="d-flex justify-space-between">
           <li v-for="route in routes" :key="route.name">
             <router-link :to="route.path ? route.path : '/'">{{ route.name }}</router-link>
           </li>
-        </ul>
+        </ul> -->
+        <v-tabs background-color="white" slider-color="#42b983">
+          <v-tab v-for="route in routes" :key="route.path">
+            <router-link :to="route.path ? route.path : '/'">{{ route.name }}</router-link>
+          </v-tab>
+        </v-tabs>
       </nav>
 
     </v-app-bar>
@@ -34,7 +39,7 @@ export default {
   name: 'App',
 
   data: () => ({
-    routes,
+    routes: routes.filter(route => route.menu),
   }),
 };
 </script>
@@ -51,11 +56,13 @@ export default {
 nav {
   padding: 30px;
   width: auto;
+  text-decoration: none;
 
   a {
     font-weight: bold;
     color: #2c3e50;
     padding: 10px;
+    text-decoration: none;
 
     &.router-link-exact-active {
       color: #42b983;
@@ -69,5 +76,9 @@ ul {
 
 li {
   list-style: none;
+}
+
+.v-tab__item{
+  text-decoration: none;
 }
 </style>
