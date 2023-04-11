@@ -21,50 +21,38 @@
             Rendimento: {{ recipe.servings }} porções | Preço por Porção:
             {{ recipe.pricePerServing }} $
           </div>
-          <!-- <v-rating
-          :value="4.5"
-          color="amber"
-          dense
-          half-increments
-          readonly
-          size="14"
-        ></v-rating> -->
         </v-row>
 
-        <div class="my-4 text-subtitle-1">
-          Preparo: {{ recipe.readyInMinutes }} minutos |
-          <v-divider vertical></v-divider>
-          Rendimento: {{ recipe.servings }} porções | Preço por Porção:
-          {{ recipe.pricePerServing }} $
-        </div>
+        <div class="my-4 text-subtitle-1"></div>
       </v-card-text>
 
       <v-divider class="mx-4"></v-divider>
+      <v-container class="d-flex">
+        <v-card elevation="0" width="25%">
+          <v-card-title tag="center">Ingredientes</v-card-title>
+          <div align="left" class="my-4 text-subtitle-1">
+            <ul v-for="step in recipe.extendedIngredients" :key="step">
+              <li>{{ step.original }}</li>
+            </ul>
+          </div>
+        </v-card>
+        <v-divider class="mx-4" vertical></v-divider>
+        <v-card elevation="0" width="75%">
+          <v-card-title>Modo de Preparo</v-card-title>
+          <div align="left" class="my-4 text-subtitle-1">
+            <ul v-for="step in recipe.analyzedInstructions" :key="step">
+              <li v-for="s in step.steps" :key="s">{{ s.step }}</li>
+            </ul>
+          </div>
 
-      <v-card-title>Modo de Preparo</v-card-title>
-      <div>
-        <ul v-for="step in recipe.analyzedInstructions" :key="step">
-          <li v-for="s in step.steps" :key="s">{{ s.step }}</li>
-        </ul>
-      </div>
-      <v-card-text>
-        <v-chip-group
-          v-model="selection"
-          active-class="deep-purple accent-4 white--text"
-          column
-        >
-          <v-chip>5:30PM</v-chip>
+          <v-card-text> </v-card-text>
+        </v-card>
+      </v-container>
 
-          <v-chip>7:30PM</v-chip>
-
-          <v-chip>8:00PM</v-chip>
-
-          <v-chip>9:00PM</v-chip>
-        </v-chip-group>
-      </v-card-text>
-
-      <v-card-actions>
-        <v-btn color="deep-purple lighten-2" text> Reserve </v-btn>
+      <v-card-actions
+        ><router-link :to="{ name: 'home' }">
+          <v-btn color="deep-purple lighten-2" text> Voltar </v-btn>
+        </router-link>
       </v-card-actions>
     </v-card>
   </v-container>
