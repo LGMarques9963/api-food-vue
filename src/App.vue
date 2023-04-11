@@ -1,41 +1,29 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="white"
-      dark
-    >
+    <v-app-bar app color="white" dark width="100%">
       <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="./assets/logo_alura.png"
-          transition="scale-transition"
-        />
+        <v-img alt="Vuetify Logo" class="shrink mr-2" contain src="./assets/logo_alura.png"
+          transition="scale-transition" />
       </div>
 
       <v-spacer></v-spacer>
 
+      <v-text-field class="d-flex align-center mt-7" label="O que está procurando..."  solo
+        prepend-inner-icon="mdi-magnify" light></v-text-field>
+      <v-spacer></v-spacer>
+
       <nav class="classynav">
-            <ul class="d-flex justify-space-between">       
-              <li v-for="route in routes" :key="route.name">
-                <router-link :to="route.path ? route.path : '/'">{{route.name}}</router-link>
-              </li>
-            </ul>
-          </nav>
-          <v-text-field
-            class="d-flex align-center"
-            label="O que está procurando..."
-            dense
-            solo
-            prepend-inner-icon="mdi-magnify"
-            light
-          ></v-text-field>
+        <ul class="d-flex justify-space-between">
+          <li v-for="route in routes" :key="route.name">
+            <router-link :to="route.path ? route.path : '/'">{{ route.name }}</router-link>
+          </li>
+        </ul>
+      </nav>
+
     </v-app-bar>
 
     <v-main>
-      <router-view/>
+      <router-view />
     </v-main>
   </v-app>
 </template>
