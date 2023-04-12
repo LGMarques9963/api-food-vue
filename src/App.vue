@@ -13,13 +13,14 @@
 
       <v-spacer></v-spacer>
       <v-autocomplete
-        v-model="entries"
         :items="entries"
         :loading="isLoading"
         :search-input.sync="search"
+        @change="onChange"
+        @keyup.enter="searchRecipe(search)"
         color="black"
         item-text="title"
-        item-value="title"
+        item-value="id"
         label="O que está procurando..."
         placeholder="Começe a digitar para buscar"
         prepend-inner-icon="mdi-magnify"
@@ -70,37 +71,42 @@ export default {
     queryLimit: 10,
   }),
 
-  // computed: {
-  //   fields() {
-  //     if (!this.model) return [];
+  computed: {
+    fields() {
+      if (!this.model) return [];
 
-  //     return Object.keys(this.model).map((key) => {
-  //       return {
-  //         key,
-  //         value: this.model[key] || "n/a",
-  //       };
-  //     });
-  //   },
-  //   items() {
-  //     return this.entries.map((entry) => {
-  //       const Title = entry.title
-  //       return Object.assign({}, entry, { Title });
-  //     });
-  //   },
-  // },
+      return Object.keys(this.model).map((key) => {
+        return {
+          key,
+          value: this.model[key] || "n/a",
+        };
+      });
+    },
+    items() {
+      return this.entries.map((entry) => {
+        const Title = entry.title;
+        return Object.assign({}, entry, { Title });
+      });
+    },
+  },
+
+  methods: {
+    onChange(item) {
+      this.$router.push({ name: "recipe", params: { id: item } });
+      this.entries = []
+    },
+    searchRecipe(search){
+      console.log("Enter digitado")
+      console.log(search)
+    }
+  },
 
   watch: {
-    model (val) {
-      console.log(val)
-    },
     search(val) {
-      if (this.entries.length > 0) return;
-
       if (this.isLoading) return;
 
-      this.isLoading = true;
-
-      if (val) {
+      if (val && val.length > 3) {
+        this.isLoading = true;
         this.$http
           .get(`recipes/autocomplete`, {
             params: { number: this.queryLimit, query: val },
@@ -110,8 +116,8 @@ export default {
           })
           .catch((err) => console.log(err))
           .finally(() => (this.isLoading = false));
-      }else{
-        this.entries = []
+      } else {
+        this.entries = [];
       }
       // fetch('https://api.publicapis.org/entries')
       //   .then(res => res.json())
