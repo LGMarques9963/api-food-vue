@@ -2,14 +2,35 @@
   <v-app>
     <v-app-bar app color="white" dark width="100%">
       <div class="d-flex align-center">
-        <v-img alt="Vuetify Logo" class="shrink mr-2" contain src="./assets/logo_alura.png"
-          transition="scale-transition" />
+        <v-img
+          alt="Vuetify Logo"
+          class="shrink mr-2"
+          contain
+          src="./assets/logo_alura.png"
+          transition="scale-transition"
+        />
       </div>
 
       <v-spacer></v-spacer>
-
-      <v-text-field class="d-flex align-center mt-7" label="O que está procurando..."  solo
-        prepend-inner-icon="mdi-magnify" light></v-text-field>
+      <v-autocomplete
+        v-model="entries"
+        :items="entries"
+        :loading="isLoading"
+        :search-input.sync="search"
+        color="black"
+        item-text="title"
+        item-value="title"
+        label="O que está procurando..."
+        placeholder="Começe a digitar para buscar"
+        prepend-inner-icon="mdi-magnify"
+        class="d-flex align-center mt-7"
+        solo
+        rounded
+        clearable
+        light
+      ></v-autocomplete>
+      <!-- <v-text-field class="d-flex align-center mt-7" label="O que está procurando..."  solo
+        prepend-inner-icon="mdi-magnify" light></v-text-field> -->
       <v-spacer></v-spacer>
 
       <nav class="classynav">
@@ -20,11 +41,12 @@
         </ul> -->
         <v-tabs background-color="white" slider-color="#42b983">
           <v-tab v-for="route in routes" :key="route.path">
-            <router-link :to="route.path ? route.path : '/'">{{ route.name }}</router-link>
+            <router-link :to="route.path ? route.path : '/'">{{
+              route.name
+            }}</router-link>
           </v-tab>
         </v-tabs>
       </nav>
-
     </v-app-bar>
 
     <v-main>
@@ -34,13 +56,74 @@
 </template>
 
 <script>
-import { routes } from './router/index';
+import { routes } from "./router/index";
 export default {
-  name: 'App',
+  name: "App",
 
   data: () => ({
-    routes: routes.filter(route => route.menu),
+    routes: routes.filter((route) => route.menu),
+    entries: [],
+    isLoading: false,
+    model: null,
+    search: null,
+    descriptionLimit: 60,
+    queryLimit: 10,
   }),
+
+  // computed: {
+  //   fields() {
+  //     if (!this.model) return [];
+
+  //     return Object.keys(this.model).map((key) => {
+  //       return {
+  //         key,
+  //         value: this.model[key] || "n/a",
+  //       };
+  //     });
+  //   },
+  //   items() {
+  //     return this.entries.map((entry) => {
+  //       const Title = entry.title
+  //       return Object.assign({}, entry, { Title });
+  //     });
+  //   },
+  // },
+
+  watch: {
+    model (val) {
+      console.log(val)
+    },
+    search(val) {
+      if (this.entries.length > 0) return;
+
+      if (this.isLoading) return;
+
+      this.isLoading = true;
+
+      if (val) {
+        this.$http
+          .get(`recipes/autocomplete`, {
+            params: { number: this.queryLimit, query: val },
+          })
+          .then((res) => {
+            this.entries = res.data;
+          })
+          .catch((err) => console.log(err))
+          .finally(() => (this.isLoading = false));
+      }else{
+        this.entries = []
+      }
+      // fetch('https://api.publicapis.org/entries')
+      //   .then(res => res.json())
+      //   .then(res => {
+      //     const { count, entries } = res
+      //     this.count = count
+      //     this.entries = entries
+      //   })
+      //   .catch(err => console.log(err))
+      //   .finally(() => this.isLoading = false)
+    },
+  },
 };
 </script>
 
@@ -78,7 +161,7 @@ li {
   list-style: none;
 }
 
-.v-tab__item{
+.v-tab__item {
   text-decoration: none;
 }
 </style>

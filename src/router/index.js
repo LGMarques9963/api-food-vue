@@ -21,7 +21,7 @@ export const routes = [
     path: '/recipe/:id',
     name: 'recipe',
     component: () => import(/* webpackChunkName: "recipe" */ '../views/RecipeView.vue'),
-    menu: true
+    menu: false
   }
 ]
 
