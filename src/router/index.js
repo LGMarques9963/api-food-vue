@@ -22,6 +22,12 @@ export const routes = [
     name: 'recipe',
     component: () => import(/* webpackChunkName: "recipe" */ '../views/RecipeView.vue'),
     menu: false
+  },
+  {
+    path: '/search/:id',
+    name: 'search',
+    component: () => import(/* webpackChunkName: "search" */ '../views/SearchView.vue'),
+    menu: true
   }
 ]
 

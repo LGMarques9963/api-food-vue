@@ -1,18 +1,26 @@
 <template>
   <v-container class="d-flex flex-start flex-wrap">
+    <v-progress-linear
+        :active="loading"
+        :indeterminate="loading"
+        absolute
+        top
+        color="deep-purple accent-4"
+      ></v-progress-linear>
     <v-card
       class="mx-auto my-12"
       max-width="374"
       v-for="recipe of recipes"
       :key="recipe.title"
+      :loading="loading"
     >
-      <template slot="progress">
+      <!-- <template slot="progress">
         <v-progress-linear
           color="deep-purple"
           height="10"
           indeterminate
         ></v-progress-linear>
-      </template>
+      </template> -->
 
       <v-img height="250" :src="recipe.image" width="100%"></v-img>
 
@@ -57,17 +65,20 @@ export default {
 
   data: () => ({
     recipes: [],
+    loading: false
   }),
 
   components: {},
 
   mounted() {
+    this.loading = true
     this.$http
       .get("recipes/random", { params: { number: NUMBER_OF_RECIPES } })
       .then(
         (recipes) => (this.recipes = recipes.data.recipes),
         (err) => console.log(err)
-      );
+      )
+      .finally(() => this.loading = false);
   },
 };
 </script>

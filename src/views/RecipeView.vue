@@ -64,14 +64,21 @@ export default {
     return {
       recipe: {},
       id: this.$route.params.id,
+      loading: false,
     };
   },
   mounted() {
+    this.loading = true;
     if (this.id) {
-      this.$http.get(`recipes/${this.id}/information`).then(
-        (recipe) => (this.recipe = recipe.data),
-        (err) => console.log(err)
-      );
+      this.$http
+        .get(`recipes/${this.id}/information`)
+        .then(
+          (recipe) => (this.recipe = recipe.data),
+          (err) => console.log(err)
+        )
+        .finally(() => (this.loading = false));
+    }else{
+      this.$route.push({name: "home"})
     }
   },
 };

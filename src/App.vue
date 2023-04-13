@@ -26,6 +26,7 @@
         prepend-inner-icon="mdi-magnify"
         class="d-flex align-center mt-7"
         solo
+        hide-no-data
         rounded
         clearable
         light
@@ -97,6 +98,8 @@ export default {
     },
     searchRecipe(search){
       console.log("Enter digitado")
+      this.$router.push({ name: "search", params: { id: search } });
+      this.entries = []
       console.log(search)
     }
   },
