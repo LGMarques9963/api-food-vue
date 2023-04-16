@@ -1,84 +1,96 @@
 <template>
   <v-container class="d-flex flex-start flex-wrap">
     <v-progress-linear
-        :active="loading"
-        :indeterminate="loading"
-        absolute
-        top
-        color="deep-purple accent-4"
-      ></v-progress-linear>
-    <v-card
-      class="mx-auto my-12"
-      max-width="374"
-      v-for="recipe of recipes"
-      :key="recipe.title"
-      :loading="loading"
-    >
-      <!-- <template slot="progress">
-        <v-progress-linear
-          color="deep-purple"
-          height="10"
-          indeterminate
-        ></v-progress-linear>
-      </template> -->
+      :active="loading"
+      :indeterminate="loading"
+      absolute
+      top
+      color="deep-purple accent-4"
+    ></v-progress-linear>
+    <v-col width="100%" cols="10" class="d-flex flex-wrap">
+      <v-col :key="recipe.title" :cols="4" v-for="recipe in recipes">
+        <v-card :loading="loading">
+          <v-img
+            height="200px"
+            :src="recipe.image"
+            width="100%"
+            class="white--text align-end"
+            gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+          >
+          
+          <v-card-title>{{ recipe.title }}</v-card-title>
+        </v-img>
 
-      <v-img height="250" :src="recipe.image" width="100%"></v-img>
+          <!-- <v-card-text>
+            <v-row align="center" class="mx-0">
+              <v-rating
+                :value="5 * (recipe.spoonacularScore / 100)"
+                color="amber"
+                dense
+                half-increments
+                readonly
+                size="14"
+              ></v-rating>
 
-      <v-card-title>{{ recipe.title }}</v-card-title>
+              <div class="grey--text ms-4">
+                {{ recipe.id }} - {{ recipe.spoonacularScore }} ({{
+                  recipe.aggregateLikes
+                }})
+              </div>
+            </v-row>
 
-      <v-card-text>
-        <v-row align="center" class="mx-0">
-          <v-rating
-            :value="5 * (recipe.spoonacularScore / 100)"
-            color="amber"
-            dense
-            half-increments
-            readonly
-            size="14"
-          ></v-rating>
+            <div class="my-4 text-subtitle-1">
+              $ • {{ recipe.cuisines[0] }}, {{ recipe.dishTypes[0] }}
+            </div>
+          </v-card-text> -->
 
-          <div class="grey--text ms-4">
-            {{ recipe.id }} - {{ recipe.spoonacularScore }} ({{ recipe.aggregateLikes }})
-          </div>
-        </v-row>
+          <v-divider class="mx-4"></v-divider>
 
-        <div class="my-4 text-subtitle-1">
-          $ • {{ recipe.cuisines[0] }}, {{ recipe.dishTypes[0] }}
-        </div>
-      </v-card-text>
+          <v-card-actions>
+            <router-link :to="{ name: 'recipe', params: { id: recipe.id } }">
+              <v-btn color="deep-purple lighten-2" text> See Recipe </v-btn>
+            </router-link>
+            <v-spacer></v-spacer>
 
-      <v-divider class="mx-4"></v-divider>
+              <v-btn icon>
+                <v-icon>mdi-heart</v-icon>
+              </v-btn>
 
-      <v-card-actions>
-        <router-link :to="{ name: 'recipe', params: { id: recipe.id }}">
-          <v-btn color="deep-purple lighten-2" text> See Recipe </v-btn>
-        </router-link>
-      </v-card-actions>
-    </v-card>
+              <v-btn icon>
+                <v-icon>mdi-bookmark</v-icon>
+              </v-btn>
+
+              <v-btn icon>
+                <v-icon>mdi-share-variant</v-icon>
+              </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-col>
   </v-container>
 </template>
 
 <script>
-const NUMBER_OF_RECIPES = 8;
+const NUMBER_OF_RECIPES = 9;
 export default {
   name: "HomeView",
 
   data: () => ({
     recipes: [],
-    loading: false
+    loading: false,
   }),
 
   components: {},
 
   mounted() {
-    this.loading = true
+    this.loading = true;
     this.$http
       .get("recipes/random", { params: { number: NUMBER_OF_RECIPES } })
       .then(
         (recipes) => (this.recipes = recipes.data.recipes),
         (err) => console.log(err)
       )
-      .finally(() => this.loading = false);
+      .finally(() => (this.loading = false));
   },
 };
 </script>

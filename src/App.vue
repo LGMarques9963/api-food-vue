@@ -25,22 +25,14 @@
         placeholder="Começe a digitar para buscar"
         prepend-inner-icon="mdi-magnify"
         class="d-flex align-center mt-7"
-        solo
         hide-no-data
         rounded
         clearable
         light
       ></v-autocomplete>
-      <!-- <v-text-field class="d-flex align-center mt-7" label="O que está procurando..."  solo
-        prepend-inner-icon="mdi-magnify" light></v-text-field> -->
       <v-spacer></v-spacer>
 
       <nav class="classynav">
-        <!-- <ul class="d-flex justify-space-between">
-          <li v-for="route in routes" :key="route.name">
-            <router-link :to="route.path ? route.path : '/'">{{ route.name }}</router-link>
-          </li>
-        </ul> -->
         <v-tabs background-color="white" slider-color="#42b983">
           <v-tab v-for="route in routes" :key="route.path">
             <router-link :to="route.path ? route.path : '/'">{{
@@ -97,10 +89,8 @@ export default {
       this.entries = []
     },
     searchRecipe(search){
-      console.log("Enter digitado")
       this.$router.push({ name: "search", params: { id: search } });
       this.entries = []
-      console.log(search)
     }
   },
 
@@ -122,15 +112,6 @@ export default {
       } else {
         this.entries = [];
       }
-      // fetch('https://api.publicapis.org/entries')
-      //   .then(res => res.json())
-      //   .then(res => {
-      //     const { count, entries } = res
-      //     this.count = count
-      //     this.entries = entries
-      //   })
-      //   .catch(err => console.log(err))
-      //   .finally(() => this.isLoading = false)
     },
   },
 };
