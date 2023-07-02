@@ -77,7 +77,7 @@ export default {
     },
     items() {
       return this.entries.map((entry) => {
-        const Title = entry.title;
+        const Title = entry.Nome;
         return Object.assign({}, entry, { Title });
       });
     },
