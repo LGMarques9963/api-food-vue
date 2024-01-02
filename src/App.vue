@@ -40,6 +40,7 @@
             }}</router-link>
           </v-tab>
         </v-tabs>
+        <span>{{ apiKey }}</span>
       </nav>
     </v-app-bar>
 
@@ -62,6 +63,7 @@ export default {
     search: null,
     descriptionLimit: 60,
     queryLimit: 10,
+    apiKey: process.env.VUE_APP_API_KEY,
   }),
 
   computed: {
