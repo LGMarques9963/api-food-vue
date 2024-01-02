@@ -83,6 +83,7 @@ export default {
   components: {},
 
   mounted() {
+    console.log("API_KEY", process.env.VUE_APP_API_KEY);
     this.loading = true;
     this.$http
       .get("recipes/random", { params: { number: NUMBER_OF_RECIPES } })
